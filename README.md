@@ -16,3 +16,6 @@ Tryfle was making a Sylveon themed resource pack, and it inspired me to make a p
 > Furthermore, setting your client's maximum fps to unlimited is likely to cause the gif to appear laggy.
 > 
 > This is because the method I use for progressing each frame is based off of the `frameTimeCounter` uniform which is unreliable at absurdly high fps.
+
+### Footnote
+If you actually want this as a usable addition to your game that doesn't mess up a bunch of settings and is compatible with unlimited fps, message me on discord and I'll make it a mod for the minecraft client you play on real quick.

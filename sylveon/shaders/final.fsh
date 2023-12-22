@@ -1,8 +1,10 @@
-#version 130
+#version 120
 
 uniform sampler2D colortex0; // gcolor
 uniform sampler2D colortex7; // textures/pan.png
 
+uniform float viewWidth;
+uniform float viewHeight;
 uniform float frameTimeCounter; // shader time (loops after 1 hour)
 
 // horizontally concatenated prancing sylveon gif frames resolution
@@ -10,8 +12,8 @@ const vec2 panRes = vec2(768, 128);
 const float fps = 50.0 / 3.0; // fps to render the gif (16.667)
 
 void main() {
-    // resolution of gcolor (window size) *not supported in #version 120
-    vec2 texRes = textureSize(colortex0, 0);
+    // resolution of gcolor (window size)
+    vec2 texRes = vec2(viewWidth, viewHeight);
 
     // fragment shader coordinate
     vec2 fragCoord = gl_FragCoord.xy;
@@ -24,14 +26,11 @@ void main() {
     vec2 d = 128.0 / texRes;
     // if shader is in bottom right sylveon-sized-unit
     if (texCoord.x > 1 - d.x && texCoord.y < d.y) {
-        // nth frame based on time (breaks if fps is unreasonable high)
-        int n = int(floor(frameTimeCounter * fps));
-        n %= 6;
-        // scale to sylveon-sized-unit
-        n *= 128;
+        // x of nth frame from time (breaks if fps is unreasonable high)
+        int n = int(floor(frameTimeCounter * fps)) % 6 * 128;
 
         // feels like black magic but it actually makes a lot of sense
-        float u = fragCoord.x - texRes.x + n; // (deceptively simplified)
+        float u = fragCoord.x - viewWidth + n; // (deceptively simplified)
         vec2 uv = vec2(u, -fragCoord.y) / panRes;
 
         vec4 panColor = texture2D(colortex7, uv);
